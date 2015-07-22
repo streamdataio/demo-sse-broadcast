@@ -213,3 +213,13 @@ bower_components
 
 # Linux trash folder which might appear on any partition or disk
 .Trash-*
+
+### Maven ###
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
