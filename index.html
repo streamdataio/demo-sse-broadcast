@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <script>
+        var source = null;
+
+        function check(type) {
+            if (source != null) {
+                source.close();
+            }
+
+            if ('special' === type) {
+                source = new EventSource('http://localhost:8080/sse?type=special');
+
+            } else if ('standard' === type) {
+                source = new EventSource('http://localhost:8080/sse?type=standard');
+
+            }
+
+            source.onopen = function(e) {
+                document.body.innerHTML += 'SSE connection opened. Waiting for data...<br>';
+            };
+
+            source.onmessage = function(e) {
+                document.body.innerHTML += e.data + '<br>';
+            };
+
+        }
+    </script>
+</head>
+<body>
+
+<p>Who are you?</p>
+
+<form>
+    <input type="radio" name="browser" onclick="check(this.value)" value="special">Special User<br>
+    <input type="radio" name="browser" onclick="check(this.value)" value="standard">Standard User<br>
+    <br>
+</form>
+
+</body>
+</html>
+
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+    <!--<meta charset="UTF-8">-->
+    <!--<title></title>-->
+    <!--<script>-->
+        <!--document.cookie = "ssetest=123";-->
+    <!--</script>-->
+<!--</head>-->
+<!--<body>-->
+<!--<script>-->
+    <!--console.log("tototo");-->
+    <!--document.cookie = "name=toto";-->
+    <!--var source = new EventSource('http://localhost:8080/sse?type=specials', { headers: { Cookie: document.cookies } });-->
+    <!--source.onmessage = function(e) {-->
+        <!--console.log('onmessage: %o %o', source, e);-->
+        <!--document.body.innerHTML += e.data + '<br>';-->
+    <!--};-->
+<!--</script>-->
+<!--</body>-->
+<!--</html>-->
