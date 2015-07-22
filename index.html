@@ -7,6 +7,7 @@
 
         function check(type) {
             if (source != null) {
+                document.body.innerHTML += 'SSE connection closed.<br>';
                 source.close();
             }
 

@@ -7,6 +7,10 @@ import javax.ws.rs.container.ContainerResponseContext;
 import javax.ws.rs.container.ContainerResponseFilter;
 import javax.ws.rs.core.MultivaluedMap;
 
+/**
+ * Streamdata.io - http://streamdata.io
+ * Created by ctranxuan on 22/07/15.
+ */
 public class CorsResponseFilter
         implements ContainerResponseFilter {
 
@@ -16,9 +20,7 @@ public class CorsResponseFilter
         MultivaluedMap<String, Object> headers = responseContext.getHeaders();
 
         headers.add("Access-Control-Allow-Origin", "*");
-        //headers.add("Access-Control-Allow-Origin", "http://podcastpedia.org"); //allows CORS requests only coming from podcastpedia.org
         headers.add("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT");
-        headers.add("Access-Control-Allow-Headers", "X-Requested-With, Content-Type, X-Codingpedia");
     }
 
 }

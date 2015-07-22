@@ -14,8 +14,8 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 
 /**
+ * Streamdata.io - http://streamdata.io
  * Created by ctranxuan on 22/07/15.
- *
  */
 @Component
 @Path("/sse")
@@ -33,6 +33,22 @@ public class SseResource {
         broadcast();
     }
 
+    @GET
+    @Produces(SERVER_SENT_EVENTS)
+    public EventOutput listenToBroadcast(@QueryParam("type") final String type) {
+        final EventOutput eventOutput = new EventOutput();
+
+        if (SPECIAL_USER_TYPE.equals(type) || STANDARD_USER_TYPE.equals(type)) {
+            broadcasters.get(type).add(eventOutput);
+
+        } else {
+            throw new RuntimeException("Unknown type: " + type);
+
+        }
+
+        return eventOutput;
+    }
+
     private void broadcast() {
         new Thread(() -> {
             while (true) {
@@ -47,9 +63,7 @@ public class SseResource {
                 specialUsersBroadcaster.broadcast(event);
 
                 try {
-                    Thread.sleep(
-                            ThreadLocalRandom.current().nextInt(
-                                    (int) TimeUnit.SECONDS.toMillis(10)));
+                    Thread.sleep(TimeUnit.SECONDS.toMillis(5));
 
                 } catch (InterruptedException ignore) {
 
@@ -69,14 +83,12 @@ public class SseResource {
                     OutboundEvent event = eventBuilder.name("message")
                             .mediaType(MediaType.TEXT_PLAIN_TYPE)
                             .id(UUID.randomUUID().toString())
-                            .data(String.class, "any user: hello world! Your dice is " + random.nextInt(23))
+                            .data(String.class, "standard user: hello world! Your dice is " + random.nextInt(23))
                             .build();
                     allUsersBroadcaster.broadcast(event);
 
                     try {
-                        Thread.sleep(
-                                ThreadLocalRandom.current().nextInt(
-                                        (int) TimeUnit.SECONDS.toMillis(10)));
+                        Thread.sleep(TimeUnit.SECONDS.toMillis(5));
 
                     } catch (InterruptedException ignore) {
 
@@ -87,21 +99,5 @@ public class SseResource {
 
         }).start();
 
-    }
-
-    @GET
-    @Produces(SERVER_SENT_EVENTS)
-    public EventOutput listenToBroadcast(@QueryParam("type") final String type) {
-        final EventOutput eventOutput = new EventOutput();
-
-        if (SPECIAL_USER_TYPE.equals(type) || STANDARD_USER_TYPE.equals(type)) {
-            broadcasters.get(type).add(eventOutput);
-
-        } else {
-            throw new RuntimeException("Unknown type: " + type);
-
-        }
-
-        return eventOutput;
     }
 }
