@@ -4,3 +4,6 @@ This demo is related to the StackOverflow topic: http://stackoverflow.com/questi
   
 Start the SpringBoot server by running the main class `DemoSseBroadcastApplication` through an IDE or through maven
  with the command `mvn spring-boot:run` and test in your browser by opening the `index.html` file.
+
+For Tomcat deployment, run `mvn clean install`, get the war and deployed it in your Tomcat.
+To test, you can open a browser `http://localhost:8080/demo-sse-broadcast-0.0.1-SNAPSHOT/sse?type=standard` and see incoming events.
