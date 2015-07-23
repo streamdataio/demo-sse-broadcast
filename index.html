@@ -12,10 +12,10 @@
             }
 
             if ('special' === type) {
-                source = new EventSource('http://localhost:8080/sse?type=special');
+                source = new EventSource('http://localhost:8080/demo-sse-broadcast-0.0.1-SNAPSHOT/sse?type=special');
 
             } else if ('standard' === type) {
-                source = new EventSource('http://localhost:8080/sse?type=standard');
+                source = new EventSource('http://localhost:8080/demo-sse-broadcast-0.0.1-SNAPSHOT/sse?type=standard');
 
             }
 
