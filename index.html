@@ -5,17 +5,23 @@
     <script>
         var source = null;
 
+        function appendEvent(e) {
+            document.body.innerHTML += e.data + '<br>';
+        }
+
         function check(type) {
             if (source != null) {
                 document.body.innerHTML += 'SSE connection closed.<br>';
                 source.close();
             }
 
+            source = new EventSource('http://localhost:8080/sse');
+
             if ('special' === type) {
-                source = new EventSource('http://localhost:8080/sse?type=special');
+                source.addEventListener('special', appendEvent);
 
             } else if ('standard' === type) {
-                source = new EventSource('http://localhost:8080/sse?type=standard');
+                source.addEventListener('standard', appendEvent);
 
             }
 
@@ -23,9 +29,7 @@
                 document.body.innerHTML += 'SSE connection opened. Waiting for data...<br>';
             };
 
-            source.onmessage = function(e) {
-                document.body.innerHTML += e.data + '<br>';
-            };
+
 
         }
     </script>
@@ -42,25 +46,3 @@
 
 </body>
 </html>
-
-<!--<!DOCTYPE html>-->
-<!--<html lang="en">-->
-<!--<head>-->
-    <!--<meta charset="UTF-8">-->
-    <!--<title></title>-->
-    <!--<script>-->
-        <!--document.cookie = "ssetest=123";-->
-    <!--</script>-->
-<!--</head>-->
-<!--<body>-->
-<!--<script>-->
-    <!--console.log("tototo");-->
-    <!--document.cookie = "name=toto";-->
-    <!--var source = new EventSource('http://localhost:8080/sse?type=specials', { headers: { Cookie: document.cookies } });-->
-    <!--source.onmessage = function(e) {-->
-        <!--console.log('onmessage: %o %o', source, e);-->
-        <!--document.body.innerHTML += e.data + '<br>';-->
-    <!--};-->
-<!--</script>-->
-<!--</body>-->
-<!--</html>-->
